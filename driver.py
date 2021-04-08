@@ -19,13 +19,14 @@ def main(argv):
 	optim_fn = 'adam'
 	verbose = False
 	preserve_color = False
+	closure = False
 	multiple_styles = 1
 	max_size = []
 	combinations = {}
 	results = []
 	
 	try:
-		opts, args = getopt.getopt(argv, 'hvpb:c:s:o:e:', ['preserve-color','beta=', 'content-file=', 'style-file=', 'output-file=', 'epochs=', 'output-dir=', 'max-size=', 'optimizer=', 'input-file='])
+		opts, args = getopt.getopt(argv, 'hvpb:c:s:o:e:', ['preserve-color','beta=', 'content-file=', 'style-file=', 'output-file=', 'epochs=', 'output-dir=', 'max-size=', 'optimizer=', 'input-file=', 'closure'])
 	except getopt.GetoptError:
 		print('error')
 		sys.exit(1)
@@ -37,6 +38,8 @@ def main(argv):
 			sys.exit(0)
 		elif opt == '-v':
 			verbose = True
+		elif opt == '--closure':
+			closure = True
 		elif opt in ('-b', '--beta'):
 			beta = arg
 		elif opt in ('-c', '--content-file'):
@@ -57,6 +60,7 @@ def main(argv):
 			input_file = arg
 		elif opt in('-p', '--preserve-color'):
 			preserve_color = True
+		
 
 	if input_file != '':
 		
@@ -93,11 +97,7 @@ def main(argv):
 	
 	print('Starting the program...')
 	
-	print(combinations)
-	print(results)
-	print(verbose)
-	
-	train(combinations, results, result_dir, beta, epochs, max_size, optim_fn, verbose, preserve_color)
+	train(combinations, results, result_dir, beta, epochs, max_size, optim_fn, verbose, preserve_color, closure)
 		
 if __name__ == '__main__':
 	main(sys.argv[1:])
